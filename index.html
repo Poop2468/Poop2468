@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Delphi’s 3D World ✨</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Noto+Sans+KR:wght@400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- ✨ 로딩 화면 -->
+  <div id="loader">
+    <div class="stars">
+      <div class="star"></div>
+      <div class="star"></div>
+      <div class="star"></div>
+    </div>
+    <p>Loading magic... 🌟</p>
+  </div>
+
+  <header>
+    <h1>🌸 Delphi’s 3D World 🌸</h1>
+    <nav>
+      <a href="#about">About</a>
+      <a href="#works">Works</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
+
+  <section id="home" class="hero">
+    <h2>Hi! I’m <span class="highlight">Delphi</span> 👋<br>3D Modeler & Dream Creator</h2>
+    <canvas id="cute3d"></canvas>
+  </section>
+
+  <section id="about">
+    <h2>About Me 💕</h2>
+    <p>
+      저는 귀엽고 따뜻한 3D 캐릭터와 공간을 만드는 <strong>3D 아티스트 Delphi</strong>입니다.<br>
+      현실과 상상의 경계를 흐리게 만드는 걸 좋아해요 ✨
+    </p>
+    <ul class="skills">
+      <li>🎨 Blender</li>
+      <li>🖌️ Substance Painter</li>
+      <li>🌈 Marmoset Toolbag</li>
+      <li>🎮 Unity / Unreal Engine</li>
+    </ul>
+  </section>
+
+  <section id="works">
+    <h2>My Works ✨</h2>
+    <div class="gallery">
+      <div class="card">
+        <img src="images/work1.png" alt="Work 1" />
+        <p>“Cotton Bunny” 🐰</p>
+      </div>
+      <div class="card">
+        <img src="images/work2.png" alt="Work 2" />
+        <p>“Pastel Room” 🏠</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact">
+    <h2>Contact 💌</h2>
+    <p>📧 delphi.3dartist@email.com</p>
+    <div class="socials">
+      <a href="#"><img src="icons/artstation.svg" alt="ArtStation"></a>
+      <a href="#"><img src="icons/instagram.svg" alt="Instagram"></a>
+      <a href="#"><img src="icons/twitter.svg" alt="Twitter"></a>
+    </div>
+  </section>
+
+  <footer>© 2025 Delphi’s 3D World</footer>
+
+ <script src="https://cdn.jsdelivr.net/npm/three@0.157.0/build/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.157.0/examples/js/loaders/GLTFLoader.js"></script>
+<script src="main.js"></script>
+</body>
+</html>
