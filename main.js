@@ -4,7 +4,7 @@ window.addEventListener("load", () => {
   setTimeout(() => loader.classList.add("hidden"), 1000);
 });
 
-// 🌌 별 배경
+// 🌌 별 배경 (기존 코드 유지)
 const bgCanvas = document.createElement('canvas');
 bgCanvas.id = "bgStars";
 document.querySelector(".hero").prepend(bgCanvas);
@@ -59,22 +59,24 @@ renderer.setSize(window.innerWidth, 300);
 // 조명
 const ambientLight = new THREE.AmbientLight(0xffffff, 0.7);
 scene.add(ambientLight);
-const light = new THREE.PointLight(0xffffff, 1.3);
-light.position.set(3, 3, 3);
-scene.add(light);
+const pointLight = new THREE.PointLight(0xffc0cb, 1.3); // 초기 핑크
+pointLight.position.set(3, 3, 3);
+scene.add(pointLight);
 
 camera.position.set(0, 1.2, 2.5);
 
 // 🎀 glTF 모델
 let delphiModel = null;
+let modelLoaded = false;
 const loaderGLTF = new THREE.GLTFLoader();
 loaderGLTF.load(
   'models/delphi_character.glb',
   (gltf) => {
     delphiModel = gltf.scene;
-    delphiModel.scale.set(1.2, 1.2, 1.2);
+    delphiModel.scale.set(0.1, 0.1, 0.1); // 작은 상태에서 등장
     delphiModel.position.y = -0.8;
     scene.add(delphiModel);
+    modelLoaded = true;
   },
   (xhr) => {
     console.log(`Loading model... ${(xhr.loaded / xhr.total * 100).toFixed(1)}%`);
@@ -94,24 +96,48 @@ document.addEventListener('mousemove', (e) => {
   targetRotX = yNorm * 0.3;
 });
 
-function animateScene() {
+// 🎶 배경음악 + 볼륨
+const bgMusic = document.getElementById('bgMusic');
+const volumeSlider = document.getElementById('volumeSlider');
+bgMusic.volume = 0.3;
+volumeSlider.addEventListener('input', (e) => {
+  bgMusic.volume = e.target.value;
+});
+
+// 🏮 애니메이션
+let startTime = null;
+
+function animateScene(time) {
   requestAnimationFrame(animateScene);
+
+  if (!startTime) startTime = time;
+  const elapsed = (time - startTime) / 1000; // 초 단위
+
   if (delphiModel) {
+    // 모델 등장 애니메이션 (0.1 → 1.2 스케일)
+    if (delphiModel.scale.x < 1.2) {
+      delphiModel.scale.x += 0.01;
+      delphiModel.scale.y += 0.01;
+      delphiModel.scale.z += 0.01;
+    }
+
+    // 마우스 회전
     delphiModel.rotation.y += (targetRotY - delphiModel.rotation.y) * 0.05;
     delphiModel.rotation.x += (targetRotX - delphiModel.rotation.x) * 0.05;
   }
+
+  // 조명 색상 변화 (sin으로 천천히)
+  const hue = (Math.sin(elapsed * 0.5) * 0.5 + 0.5) * 360; // 0~360
+  const color = new THREE.Color(`hsl(${hue}, 70%, 80%)`);
+  pointLight.color = color;
+
+  // 음악 볼륨에 따라 밝기 조정
+  pointLight.intensity = 1 + bgMusic.volume * 2;
+
   renderer.render(scene, camera);
 }
 animateScene();
 
 window.addEventListener('resize', () => {
   renderer.setSize(window.innerWidth, 300);
-});
-
-// 🎵 배경음악
-const bgMusic = document.getElementById('bgMusic');
-const volumeSlider = document.getElementById('volumeSlider');
-bgMusic.volume = 0.3;
-volumeSlider.addEventListener('input', (e) => {
-  bgMusic.volume = e.target.value;
 });
