@@ -1,10 +1,10 @@
-// ✨ 로딩 애니메이션
+// 🌟 로딩 화면
 window.addEventListener("load", () => {
   const loader = document.getElementById("loader");
   setTimeout(() => loader.classList.add("hidden"), 1000);
 });
 
-// 🌌 별 배경 캔버스
+// 🌌 별 배경
 const bgCanvas = document.createElement('canvas');
 bgCanvas.id = "bgStars";
 document.querySelector(".hero").prepend(bgCanvas);
@@ -46,7 +46,7 @@ function animateStars() {
 }
 animateStars();
 
-// 🩷 Three.js Scene 설정
+// 🩷 Three.js Scene
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(60, window.innerWidth / 300, 0.1, 1000);
 const renderer = new THREE.WebGLRenderer({
@@ -56,7 +56,7 @@ const renderer = new THREE.WebGLRenderer({
 });
 renderer.setSize(window.innerWidth, 300);
 
-// 환경 조명 + 포인트 조명
+// 조명
 const ambientLight = new THREE.AmbientLight(0xffffff, 0.7);
 scene.add(ambientLight);
 const light = new THREE.PointLight(0xffffff, 1.3);
@@ -65,7 +65,7 @@ scene.add(light);
 
 camera.position.set(0, 1.2, 2.5);
 
-// 🎀 glTF 모델 로드
+// 🎀 glTF 모델
 let delphiModel = null;
 const loaderGLTF = new THREE.GLTFLoader();
 loaderGLTF.load(
@@ -80,7 +80,7 @@ loaderGLTF.load(
     console.log(`Loading model... ${(xhr.loaded / xhr.total * 100).toFixed(1)}%`);
   },
   (error) => {
-    console.error('❌ 모델을 불러오는 중 오류 발생:', error);
+    console.error('❌ 모델 불러오기 실패:', error);
   }
 );
 
@@ -96,12 +96,10 @@ document.addEventListener('mousemove', (e) => {
 
 function animateScene() {
   requestAnimationFrame(animateScene);
-
   if (delphiModel) {
     delphiModel.rotation.y += (targetRotY - delphiModel.rotation.y) * 0.05;
     delphiModel.rotation.x += (targetRotX - delphiModel.rotation.x) * 0.05;
   }
-
   renderer.render(scene, camera);
 }
 animateScene();
@@ -113,11 +111,7 @@ window.addEventListener('resize', () => {
 // 🎵 배경음악
 const bgMusic = document.getElementById('bgMusic');
 const volumeSlider = document.getElementById('volumeSlider');
-
-// 초기 볼륨
 bgMusic.volume = 0.3;
-
-// 슬라이더로 볼륨 조절
 volumeSlider.addEventListener('input', (e) => {
   bgMusic.volume = e.target.value;
 });
