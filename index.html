@@ -1,105 +1,27 @@
-// ✨ 로딩 애니메이션
-window.addEventListener("load", () => {
-  const loader = document.getElementById("loader");
-  setTimeout(() => loader.classList.add("hidden"), 1000);
-});
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>Delphi 3D Portfolio</title>
+  <style>
+    body { margin: 0; font-family: sans-serif; overflow-x: hidden; }
+    .hero { position: relative; height: 400px; background: black; }
+    canvas { display: block; }
+    #loader { position: fixed; top:0; left:0; width:100%; height:100%; background:#000; color:#fff; display:flex; justify-content:center; align-items:center; font-size:2em; z-index:9999; transition:0.5s; }
+    #loader.hidden { opacity:0; pointer-events:none; }
+  </style>
+</head>
+<body>
+  <div id="loader">Loading...</div>
+  <div class="hero">
+    <canvas id="cute3d"></canvas>
+  </div>
 
-// 🌌 별 배경 생성
-const bgCanvas = document.createElement('canvas');
-bgCanvas.id = "bgStars";
-document.querySelector(".hero").prepend(bgCanvas);
-const ctx = bgCanvas.getContext('2d');
+  <!-- Three.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/three@0.157.0/build/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.157.0/examples/js/loaders/GLTFLoader.js"></script>
 
-function resizeStars() {
-  bgCanvas.width = window.innerWidth;
-  bgCanvas.height = document.querySelector('.hero').offsetHeight;
-}
-window.addEventListener('resize', resizeStars);
-resizeStars();
-
-const stars = Array.from({ length: 80 }, () => ({
-  x: Math.random() * bgCanvas.width,
-  y: Math.random() * bgCanvas.height,
-  r: Math.random() * 1.8 + 0.5,
-  speed: Math.random() * 0.2 + 0.1,
-  offset: Math.random() * 100
-}));
-
-let mouse = { x: 0, y: 0 };
-
-document.addEventListener('mousemove', (e) => {
-  mouse.x = e.clientX / window.innerWidth - 0.5;
-  mouse.y = e.clientY / window.innerHeight - 0.5;
-});
-
-function animateStars() {
-  ctx.clearRect(0, 0, bgCanvas.width, bgCanvas.height);
-  for (let i = 0; i < stars.length; i++) {
-    const s = stars[i];
-    const twinkle = Math.sin(Date.now() * 0.002 + s.offset) * 0.3 + 0.7;
-    ctx.beginPath();
-    ctx.arc(s.x + mouse.x * 40, s.y + mouse.y * 20, s.r, 0, Math.PI * 2);
-    ctx.fillStyle = `rgba(255, ${180 + Math.random() * 50}, ${220 + Math.random() * 30}, ${twinkle})`;
-    ctx.fill();
-
-    s.y += s.speed;
-    if (s.y > bgCanvas.height) s.y = 0;
-  }
-  requestAnimationFrame(animateStars);
-}
-animateStars();
-
-// 🩷 Three.js 뷰어 (큐브가 시선 따라 회전)
-const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(75, window.innerWidth / 300, 0.1, 1000);
-const renderer = new THREE.WebGLRenderer({
-  canvas: document.getElementById('cute3d'),
-  alpha: true,
-  antialias: true
-});
-renderer.setSize(window.innerWidth, 300);
-
-// 귀여운 큐브 + 빛
-const geometry = new THREE.BoxGeometry(1, 1, 1);
-const material = new THREE.MeshStandardMaterial({ color: 0xffb6c1, roughness: 0.5 });
-const cube = new THREE.Mesh(geometry, material);
-scene.add(cube);
-
-const light = new THREE.PointLight(0xffffff, 1);
-light.position.set(3, 3, 3);
-scene.add(light);
-
-camera.position.z = 3;
-
-// 마우스에 따라 회전하도록
-let targetRotX = 0;
-let targetRotY = 0;
-
-document.addEventListener('mousemove', (e) => {
-  const xNorm = (e.clientX / window.innerWidth - 0.5) * 2;
-  const yNorm = (e.clientY / window.innerHeight - 0.5) * 2;
-  targetRotY = xNorm * 0.6;
-  targetRotX = yNorm * 0.6;
-});
-
-function animateCube() {
-  requestAnimationFrame(animateCube);
-  // 부드럽게 회전 보간
-  cube.rotation.x += (targetRotX - cube.rotation.x) * 0.05;
-  cube.rotation.y += (targetRotY - cube.rotation.y) * 0.05;
-
-  // 기본 회전 추가 (자연스럽게)
-  cube.rotation.x += 0.005;
-  cube.rotation.y += 0.01;
-
-  renderer.render(scene, camera);
-}
-animateCube();
-
-window.addEventListener('resize', () => {
-  renderer.setSize(window.innerWidth, 300);
-});
-
-    <script src="https://cdn.jsdelivr.net/npm/three@0.157.0/build/three.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/three@0.157.0/examples/js/loaders/GLTFLoader.js"></script>
-<script src="main.js"></script>
+  <!-- Main JS -->
+  <script src="main.js"></script>
+</body>
+</html>
