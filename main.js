@@ -109,3 +109,15 @@ animateScene();
 window.addEventListener('resize', () => {
   renderer.setSize(window.innerWidth, 300);
 });
+
+// 🎵 배경음악
+const bgMusic = document.getElementById('bgMusic');
+const volumeSlider = document.getElementById('volumeSlider');
+
+// 초기 볼륨
+bgMusic.volume = 0.3;
+
+// 슬라이더로 볼륨 조절
+volumeSlider.addEventListener('input', (e) => {
+  bgMusic.volume = e.target.value;
+});
